@@ -1,0 +1,177 @@
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
+
+// Cursor movement and style
+var crsr = document.querySelector("#cursor");
+var blur = document.querySelector("#cursor-blur");
+
+document.addEventListener("mousemove", function (dets) {
+  crsr.style.left = dets.x + "px";
+  crsr.style.top = dets.y + "px";
+  blur.style.left = dets.x - 250 + "px";
+  blur.style.top = dets.y - 250 + "px";
+});
+
+var h4all = document.querySelectorAll("#nav h4");
+h4all.forEach(function (elem) {
+  elem.addEventListener("mouseenter", function () {
+    crsr.style.transform = "scale(3)"; // Use transform for scaling
+    crsr.style.border = "1px solid #fff";
+    crsr.style.backgroundColor = "transparent";
+  });
+  elem.addEventListener("mouseleave", function () {
+    crsr.style.transform = "scale(1)"; // Use transform for scaling
+    crsr.style.border = "0px solid #95C11E";
+    crsr.style.backgroundColor = "#95C11E";
+  });
+});
+
+// GSAP Animations
+gsap.to("#main", {
+  backgroundColor: "#9898e8",
+  scrollTrigger: {
+    trigger: "#main",
+    scroller: "body",
+    start: "top -25%",
+    end: "top -70%",
+    scrub: 2,
+  }
+});
+
+gsap.from("#about-us img, #about-us-in", {
+  y: 90,
+  opacity: 0,
+  duration: 1,
+  scrollTrigger: {
+    trigger: "#about-us",
+    scroller: "body",
+    start: "top 70%",
+    end: "top 65%",
+    scrub: 1,
+  }
+});
+
+gsap.from(".card", {
+  scale: 0.8,
+  duration: 1,
+  stagger: 0.1,
+  scrollTrigger: {
+    trigger: ".card",
+    scroller: "body",
+    start: "top 70%",
+    end: "top 65%",
+    scrub: 1,
+  }
+});
+
+gsap.from("#colon1", {
+  y: -70,
+  x: -70,
+  scrollTrigger: {
+    trigger: "#colon1",
+    scroller: "body",
+    start: "top 55%",
+    end: "top 45%",
+    scrub: 4,
+  }
+});
+
+gsap.from("#colon2", {
+  y: 70,
+  x: 70,
+  scrollTrigger: {
+    trigger: "#colon2",
+    scroller: "body",
+    start: "top 55%",
+    end: "top 45%",
+    scrub: 4,
+  }
+});
+
+gsap.from("#page4 h1", {
+  y: 50,
+  scrollTrigger: {
+    trigger: "#page4 h1",
+    scroller: "body",
+    start: "top 75%",
+    end: "top 70%",
+    scrub: 3,
+  }
+});
+
+// Scroll event listener for header background color change
+window.addEventListener("scroll", function () {
+  const nav = document.getElementById("nav");
+  const logo = nav.querySelector("img");
+  const scrollThreshold = window.innerHeight / 2; 
+
+  if (window.scrollY > scrollThreshold) {
+    nav.classList.add("scrolled");
+    logo.classList.add("white-logo");
+  } else {
+    nav.classList.remove("scrolled");
+    nav.classList.add("default");
+    logo.classList.remove("white-logo");
+  }
+});
+// Scroll event listener for header background color change
+window.addEventListener("scroll", function () {
+  const nav = document.getElementById("nav");
+  const logo = nav.querySelector("img");
+  const scrollThreshold = window.innerHeight / 2;
+
+  if (window.scrollY > scrollThreshold) {
+    nav.classList.add("scrolled");
+    nav.classList.remove("default");
+    logo.classList.add("white-logo");
+  } else {
+    nav.classList.add("default");
+    nav.classList.remove("scrolled");
+    logo.classList.remove("white-logo");
+  }
+});
+
+const textElement = document.getElementById('dynamic-text');
+const words = ['Global Connections', 'International Networking','Leadership Opportunities', 'Collaborative Research', 'Skill Enhancement', 'Impactful Solutions', 'Career Development'];
+let wordIndex = 0;
+let charIndex = 0;
+let isTyping = true;
+
+function type() {
+    if (isTyping) {
+        if (charIndex < words[wordIndex].length) {
+            textElement.innerHTML = 'Uncover the realm of <span class="dynamic-word">' + words[wordIndex].substring(0, charIndex + 1) + '</span>';
+            charIndex++;
+            setTimeout(type, 100); // Typing speed
+        } else {
+            isTyping = false;
+            setTimeout(erase, 2000); // Delay before erasing
+        }
+    }
+}
+
+function erase() {
+    if (charIndex > 0) {
+        textElement.innerHTML = 'Uncover the realm of <span class="dynamic-word">' + words[wordIndex].substring(0, charIndex - 1) + '</span>';
+        charIndex--;
+        setTimeout(erase, 50); // Erasing speed
+    } else {
+        isTyping = true;
+        wordIndex = (wordIndex + 1) % words.length;
+        setTimeout(() => {
+            // Clear only the changing word, keeping the constant part intact
+            textElement.innerHTML = 'Where you explore <span class="dynamic-word"></span>';
+            // Restart blinking animation for the cursor
+            textElement.style.animation = 'blink-caret .75s step-end infinite';
+            type(); // Start typing next word
+        }, 500); // Delay before typing next word
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    textElement.style.animation = 'blink-caret .75s step-end infinite'; // Start cursor blink animation
+    type(); // Start typing
+});
+
+
+
